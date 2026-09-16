@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>宋海燕 | AI 产品经理在线简历</title>
 <meta name="description" content="宋海燕的在线简历。长安大学城市规划硕士在读，求职方向为 AI 产品经理与产品经理实习，包含智能客服、健康训练和智慧乡村项目案例。">
-<meta name="theme-color" media="(prefers-color-scheme: light)" content="#FAFAF7">
-<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#111716">
+<meta name="theme-color" content="#F7FAF9">
 
 <!-- 字体：中文走系统栈（PingFang SC / 微软雅黑本身质量足够，且省去数 MB 的 CJK 字体）；
      拉丁与数字引入 webfont，只加载 latin 子集（约 30KB + 15KB），走 jsDelivr 国内可访问 -->
@@ -24,15 +23,12 @@ tailwind.config = {
     extend: {
       colors: {
         // base 是页面底色与实心兜底色阶：DEFAULT 近白纸面，1/2/3 依次压深
-        base:  { DEFAULT: '#FAFAF7', 1: '#FFFFFF', 2: '#F1F3EF', 3: '#E5E9E4' },
-        // brand（浅色底上按亮度分工，和深色版正好相反）：
-        //   DEFAULT #3F6E70 压深档 → **浅底上唯一能过 AA 的一档**，所有小字都用它（玻璃面上 4.96:1）
-        //   strong  #2F5A5C 更深一档 → 浅底上「强调」靠加深而不是提亮（6.66:1），用于 hover / 关键标签
-        //   soft    #5E9191 简历原色 → 浅底上只有 3.07:1，**只许出现在大字号、描边、装饰上，不做小字**
-        brand: { DEFAULT: '#3F6E70', strong: '#2F5A5C', soft: '#5E9191' },
-        t1:    '#1E2628',   // 玻璃面 13.4:1
-        t2:    '#5A6568',   // 玻璃面 5.2:1
-        t3:    '#606B6E'    // 玻璃面 4.8:1，最安静的灰也过 AA（所以打印不需要再写颜色映射）
+        base:  { DEFAULT: '#F7FAF9', 1: '#FFFFFF', 2: '#EEF5F4', 3: '#DDE9E8' },
+        // brand：soft / wash 取自纸质简历，DEFAULT / strong 为保证小字可读而压深。
+        brand: { DEFAULT: '#3F6D70', strong: '#2B5558', soft: '#5E8F93', wash: '#AED1D3' },
+        t1:    '#172426',
+        t2:    '#4F5F61',
+        t3:    '#657476'
       },
       fontFamily: {
         sans: ['"Instrument Sans Variable"', 'system-ui', '-apple-system', '"Segoe UI"',
@@ -48,98 +44,110 @@ tailwind.config = {
 <style>
   /* ═══ 设计令牌 ═══
      圆角规则（锁定，全站只用这三档）：
-       --r-panel  24px  → 玻璃卡片、面板等「块状容器」
-       --r-inner  16px  → 卡片内嵌套的「控件托盘」（比外层薄一档）
+       --r-panel  8px   → 玻璃卡片、面板等「块状容器」
+       --r-inner  6px   → 小型内嵌区域
        --r-pill   999px → 按钮、标签等「可点击/可交互」元素
      发丝线用压深青绿调，浅底上比中性灰更有材质感。 */
   :root {
-    color-scheme: light dark;
-    --r-panel: 24px;
-    --r-inner: 16px;
+    color-scheme: light;
+    --r-panel: 8px;
+    --r-inner: 6px;
     --r-pill: 999px;
-    --rule: rgba(47, 90, 92, .12);
-    --rule-strong: rgba(47, 90, 92, .24);
-    --glass-edge: rgba(255, 255, 255, .86);
-    --glass-rim: rgba(96, 125, 120, .20);
+    --resume-teal: #5E8F93;
+    --resume-teal-deep: #2B5558;
+    --resume-aqua: #AED1D3;
+    --resume-mist: #E9F2F2;
+    --rule: rgba(94, 143, 147, .18);
+    --rule-strong: rgba(94, 143, 147, .38);
+    --glass-edge: rgba(94, 143, 147, .20);
+    --glass-rim: rgba(255, 255, 255, .86);
     /* 青绿三档的颜色真值只有 Tailwind 的 brand 色阶一处，这里只补 CSS 里要用的那一档 */
-    --brand-strong: #2F5A5C;
-    --shadow-ambient: 0 30px 64px -40px rgba(34, 62, 62, .26);
-    --shadow-ambient-sm: 0 16px 30px -22px rgba(34, 62, 62, .20);
+    --brand-strong: #2B5558;
+    --shadow-ambient: 0 28px 62px -44px rgba(43, 85, 88, .42);
+    --shadow-ambient-sm: 0 16px 34px -26px rgba(43, 85, 88, .32);
   }
 
   html { scroll-behavior: smooth; }
   body { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; min-height: 100%; }
 
-  /* ── 页面底：近白纸面 + 几团极淡的青绿/水蓝光晕。
-        毛玻璃必须有「背后有颜色」才有意义，这层就是模糊要采样的东西；
-        全部锁定在青绿、水蓝和鼠尾草色域内（用户明确不要粉色），且固定不随滚动位移。 */
+  /* 页面底保持纸面感，颜色来自纸质简历的青绿与浅水色。 */
   body {
-    background-color: #FAFAF7;
-    background-image:
-      radial-gradient(34% 26% at 6% 5%, rgba(125, 194, 186, .16), transparent 70%),
-      radial-gradient(30% 24% at 94% 10%, rgba(131, 177, 190, .12), transparent 72%),
-      radial-gradient(34% 28% at 78% 86%, rgba(168, 208, 208, .15), transparent 74%),
-      radial-gradient(26% 22% at 50% 46%, rgba(255, 255, 255, .72), transparent 76%);
-    background-attachment: fixed;
+    background-color: #F7FAF9;
+    background-image: linear-gradient(to bottom, rgba(94, 143, 147, .026) 1px, transparent 1px);
+    background-size: 100% 72px;
   }
 
-  /* 首屏用宽幅折射光带强化空间感，人物照片仍是唯一主体素材。 */
-  .hero-stage { isolation: isolate; }
+  /* 首屏复用纸质简历的横向色带和双线结构。 */
+  .hero-stage {
+    isolation: isolate;
+    border-bottom: 1px solid var(--rule);
+    background-color: rgba(255, 255, 255, .62);
+  }
   .hero-stage::before,
   .hero-stage::after {
     content: '';
     position: absolute;
     z-index: -1;
     pointer-events: none;
-    border-radius: 999px;
-    filter: blur(38px);
+    border-radius: 0;
+    filter: none;
   }
   .hero-stage::before {
-    width: 680px; height: 150px;
-    right: -180px; top: 136px;
-    opacity: .46;
-    background: linear-gradient(90deg, transparent, rgba(109, 184, 178, .25), rgba(255, 255, 255, .82), transparent);
-    transform: rotate(-11deg);
+    width: 100%; height: 194px;
+    left: 0; top: 156px;
+    opacity: .48;
+    background: var(--resume-aqua);
+    border-top: 1px solid rgba(94, 143, 147, .26);
+    border-bottom: 1px solid rgba(94, 143, 147, .26);
+    transform: none;
   }
   .hero-stage::after {
-    width: 460px; height: 94px;
-    left: -190px; bottom: 54px;
-    opacity: .34;
-    background: linear-gradient(90deg, transparent, rgba(128, 169, 181, .22), rgba(255, 255, 255, .78), transparent);
-    transform: rotate(8deg);
+    width: 100%; height: 4px;
+    left: 0; top: 144px;
+    opacity: .94;
+    background: #3F6D70;
+    box-shadow: 0 9px 0 rgba(94, 143, 147, .58);
+    transform: none;
   }
   .hero-name {
     position: relative;
     display: inline-block;
     isolation: isolate;
-    text-shadow: 0 18px 42px rgba(35, 67, 66, .10);
+    text-shadow: 2px 3px 0 rgba(94, 143, 147, .18), 0 18px 42px rgba(43, 85, 88, .08);
   }
-  .hero-name::before {
-    content: attr(data-shadow);
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(63, 110, 112, .16);
-    transform: translate(10px, 12px);
-    pointer-events: none;
+  .hero-name::before { content: none; }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    color: var(--resume-teal-deep);
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 12px;
+    letter-spacing: .12em;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 12px;
+    height: 12px;
+    background: #3F6D70;
+    box-shadow: 5px 5px 0 rgba(174, 209, 211, .82);
   }
 
-  /* ── 毛玻璃两档 ──
-     .glass 外层卡片；.glass-in 是卡片内嵌的「控件托盘」，比外层更薄更亮。
-     用 background-color 长写而不是 background 简写，否则 :hover 改底色时会把光晕一起冲掉。 */
+  /* 毛玻璃只用于关键卡片，其他信息区采用纸质简历式平面分栏。 */
   .glass {
     position: relative;
     overflow: hidden;
-    background-color: rgba(255, 255, 255, .56);
-    -webkit-backdrop-filter: blur(28px) saturate(170%) contrast(1.03);
-    backdrop-filter: blur(28px) saturate(170%) contrast(1.03);
+    background-color: rgba(255, 255, 255, .76);
+    -webkit-backdrop-filter: blur(24px) saturate(145%) contrast(1.02);
+    backdrop-filter: blur(24px) saturate(145%) contrast(1.02);
     border: 1px solid var(--glass-edge);
     border-radius: var(--r-panel);
     box-shadow:
       var(--shadow-ambient),
-      inset 0 1px 0 rgba(255, 255, 255, .96),
-      inset 0 -1px 0 rgba(96, 125, 120, .10),
+      inset 0 1px 0 rgba(255, 255, 255, .98),
+      inset 0 -1px 0 rgba(94, 143, 147, .12),
       0 0 0 1px var(--glass-rim);
   }
   .glass::after {
@@ -147,36 +155,21 @@ tailwind.config = {
     position: absolute;
     inset: 1px;
     border-radius: calc(var(--r-panel) - 1px);
-    border: 1px solid rgba(255, 255, 255, .42);
+    border: 1px solid rgba(255, 255, 255, .66);
     pointer-events: none;
-  }
-  /* 卡片内部再嵌一层玻璃：参考图里的「控件层」质感就来自这一层嵌套 */
-  .glass-in {
-    background-color: rgba(255, 255, 255, .68);
-    -webkit-backdrop-filter: blur(18px) saturate(155%) contrast(1.02);
-    backdrop-filter: blur(18px) saturate(155%) contrast(1.02);
-    border: 1px solid rgba(255, 255, 255, .78);
-    border-radius: var(--r-inner);
-    box-shadow:
-      var(--shadow-ambient-sm),
-      inset 0 1px 0 rgba(255, 255, 255, .94),
-      inset 0 -1px 0 rgba(96, 125, 120, .08),
-      0 0 0 1px rgba(96, 125, 120, .12);
   }
   /* 玻璃内部的青绿光晕。放在 background-image 上而不是伪元素，
      这样它天然在文字下面，不需要和内容抢 z-index。 */
   .glass-glow {
-    background-image:
-      radial-gradient(58% 72% at 90% 2%, rgba(145, 205, 198, .22), transparent 66%),
-      radial-gradient(42% 52% at 4% 100%, rgba(177, 218, 213, .16), transparent 68%);
+    background-image: linear-gradient(135deg, rgba(174, 209, 211, .24), rgba(255, 255, 255, .08) 48%, rgba(94, 143, 147, .08));
   }
   /* 顶栏玻璃：比卡片更透、更薄，滚动时压在内容之上 */
   .glass-bar {
-    background-color: rgba(255, 255, 255, .72);
+    background-color: rgba(250, 253, 252, .88);
     -webkit-backdrop-filter: blur(22px) saturate(165%);
     backdrop-filter: blur(22px) saturate(165%);
     border-bottom: 1px solid var(--rule);
-    box-shadow: 0 10px 30px -24px rgba(34, 62, 62, .55);
+    box-shadow: 0 12px 30px -26px rgba(43, 85, 88, .48);
   }
   .nav-link {
     position: relative;
@@ -217,7 +210,7 @@ tailwind.config = {
         浏览器不支持 animation-timeline 时停在 scaleX(0)，等于不存在。 */
   .nav-progress {
     position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; z-index: 1;
-    background: linear-gradient(90deg, #7FB3B3, #2F5A5C);
+    background: linear-gradient(90deg, #8FC0C4, #2B5558);
     transform: scaleX(0); transform-origin: 0 50%;
   }
   @supports (animation-timeline: scroll()) {
@@ -240,11 +233,11 @@ tailwind.config = {
     color: #fff;
     /* 实心底色是渐变没渲染出来时的兜底（白字必须落在深青绿上才可读），
        不能省，只写 background-image 的话，渐变一旦失效就是白字压浅底。 */
-    background-color: #2F5A5C;
-    background-image: linear-gradient(180deg, #427778, #2F5A5C);
-    box-shadow: 0 14px 28px -14px rgba(47, 90, 92, .72), inset 0 1px 0 rgba(255, 255, 255, .24);
+    background-color: #2B5558;
+    background-image: linear-gradient(180deg, #5E8F93, #2B5558);
+    box-shadow: 0 14px 28px -14px rgba(43, 85, 88, .72), inset 0 1px 0 rgba(255, 255, 255, .24);
   }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 18px 34px -14px rgba(47, 90, 92, .8), inset 0 1px 0 rgba(255, 255, 255, .3); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 18px 34px -14px rgba(43, 85, 88, .8), inset 0 1px 0 rgba(255, 255, 255, .3); }
   .btn-primary:active { transform: translateY(0) scale(.985); }
   .btn-ghost {
     color: #1E2628;
@@ -269,7 +262,7 @@ tailwind.config = {
                 box-shadow .22s ease, transform .22s cubic-bezier(.16,1,.3,1);
   }
   .card-hover:hover {
-    background-color: rgba(255, 255, 255, .78);
+    background-color: rgba(255, 255, 255, .92);
     border-color: rgba(255, 255, 255, .95);
     box-shadow: 0 34px 62px -30px rgba(34, 62, 62, .42), inset 0 1px 0 rgba(255, 255, 255, 1);
     transform: translateY(-3px);
@@ -287,15 +280,40 @@ tailwind.config = {
     transform: perspective(1100px) rotateX(var(--rx)) rotateY(var(--ry)) translateY(-4px) scale(1.004);
   }
 
-  .project-feature { min-height: 390px; }
+  .project-feature {
+    min-height: 390px;
+    border-top: 4px solid var(--resume-teal);
+  }
   .project-card-wrap { height: 100%; }
   .project-mini {
     min-height: 292px;
     height: 100%;
     display: flex;
     flex-direction: column;
+    border-top: 3px solid rgba(94, 143, 147, .72);
   }
   .project-mini .project-links { margin-top: auto; }
+
+  .case-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    color: var(--resume-teal-deep);
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: .12em;
+  }
+  .case-label::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--resume-teal);
+  }
+
+  .project-tags {
+    padding-top: 15px;
+    border-top: 1px solid var(--rule);
+  }
 
   .contact-card {
     min-height: 142px;
@@ -311,8 +329,8 @@ tailwind.config = {
     min-height: 34px;
     padding: 7px 11px;
     border: 1px solid var(--rule);
-    border-radius: 10px;
-    background-color: rgba(255, 255, 255, .38);
+    border-radius: 4px;
+    background-color: rgba(233, 242, 242, .56);
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, .78);
     transition: transform .18s cubic-bezier(.16,1,.3,1), border-color .18s ease,
                 background-color .18s ease, color .18s ease;
@@ -343,7 +361,10 @@ tailwind.config = {
     .spot:hover::before { opacity: 1; }
   }
 
-  .profile-panel { min-height: 430px; }
+  .profile-panel {
+    min-height: 430px;
+    border-top: 5px solid var(--resume-teal);
+  }
   .profile-panel::before {
     content: '';
     position: absolute;
@@ -375,11 +396,11 @@ tailwind.config = {
     padding: 5px;
     border-radius: 50%;
     background: rgba(255, 255, 255, .72);
-    border: 1px solid rgba(255, 255, 255, .92);
+    border: 2px solid var(--resume-teal);
     box-shadow:
       0 18px 34px -22px rgba(34, 62, 62, .42),
       inset 0 1px 0 rgba(255, 255, 255, .98),
-      0 0 0 1px rgba(47, 90, 92, .16);
+      0 0 0 5px rgba(255, 255, 255, .72);
   }
   .portrait-photo {
     width: 100%; height: 100%; object-fit: cover;
@@ -394,10 +415,60 @@ tailwind.config = {
     padding: 12px 0;
     border-top: 1px solid var(--rule);
   }
+
+  main > section:nth-of-type(even) {
+    background-color: rgba(174, 209, 211, .085);
+    border-top: 1px solid rgba(94, 143, 147, .10);
+    border-bottom: 1px solid rgba(94, 143, 147, .10);
+  }
+
+  .section-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 10px 14px;
+    padding-bottom: 14px;
+    border-bottom: 3px solid var(--resume-teal);
+  }
+  .section-title::before {
+    content: attr(data-index);
+    display: inline-grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    flex: 0 0 34px;
+    color: #fff;
+    background: #3F6D70;
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .section-title::after {
+    content: attr(data-en);
+    margin-left: auto;
+    color: var(--resume-teal-deep);
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .08em;
+  }
+
+  .resume-panel {
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, .70);
+    -webkit-backdrop-filter: blur(18px) saturate(130%);
+    backdrop-filter: blur(18px) saturate(130%);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--resume-teal);
+    border-radius: 4px;
+    box-shadow: 0 24px 54px -46px rgba(43, 85, 88, .48), inset 0 1px 0 rgba(255, 255, 255, .92);
+  }
   @media (max-width: 767px) {
     .profile-panel { min-height: 0; }
     .portrait-shell { width: 112px; }
-    .hero-name::before { transform: translate(6px, 7px); }
+    .hero-stage::before { top: 178px; height: 160px; }
+    .hero-stage::after { top: 166px; }
+    .section-title::after { width: 100%; margin-left: 48px; }
   }
   @media (hover: none), (pointer: coarse) {
     .tilt-card, .tilt-card > *, .tilt-card.card-hover:hover { transform: none; }
@@ -405,97 +476,6 @@ tailwind.config = {
 
   ::selection { background: rgba(94, 145, 145, .28); color: #14201F; }
   :focus-visible { outline: 2px solid var(--brand-strong); outline-offset: 3px; border-radius: 2px; }
-
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --rule: rgba(154, 205, 201, .16);
-      --rule-strong: rgba(154, 205, 201, .34);
-      --glass-edge: rgba(255, 255, 255, .12);
-      --brand-strong: #9ACDC9;
-      --shadow-ambient: 0 26px 52px -30px rgba(0, 0, 0, .78);
-      --shadow-ambient-sm: 0 14px 28px -18px rgba(0, 0, 0, .72);
-    }
-
-    body {
-      background-color: #111716;
-      background-image:
-        radial-gradient(38% 30% at 8% 4%, rgba(70, 132, 126, .28), transparent 66%),
-        radial-gradient(34% 28% at 96% 16%, rgba(87, 127, 140, .20), transparent 68%),
-        radial-gradient(42% 34% at 78% 88%, rgba(81, 133, 128, .22), transparent 70%),
-        radial-gradient(36% 30% at 8% 74%, rgba(95, 130, 104, .18), transparent 70%),
-        radial-gradient(30% 26% at 50% 48%, rgba(255, 255, 255, .04), transparent 72%);
-    }
-    .hero-stage::before {
-      opacity: .24;
-      background: linear-gradient(90deg, transparent, rgba(80, 149, 143, .30), rgba(194, 236, 231, .18), transparent);
-    }
-    .hero-stage::after {
-      opacity: .20;
-      background: linear-gradient(90deg, transparent, rgba(86, 132, 145, .28), rgba(194, 236, 231, .14), transparent);
-    }
-    .hero-name { text-shadow: 0 20px 46px rgba(0, 0, 0, .34); }
-    .hero-name::before { -webkit-text-stroke-color: rgba(194, 236, 231, .18); }
-
-    .text-t1 { color: #EEF5F2 !important; }
-    .text-t2 { color: #B6C5C1 !important; }
-    .text-t3 { color: #93A4A0 !important; }
-    .text-brand { color: #9ACDC9 !important; }
-    .text-brand-strong { color: #C2ECE7 !important; }
-    .bg-brand { background-color: #9ACDC9 !important; }
-
-    .glass {
-      background-color: rgba(23, 31, 30, .70);
-      border-color: var(--glass-edge);
-      box-shadow: var(--shadow-ambient), inset 0 1px 0 rgba(255, 255, 255, .10);
-    }
-    .glass-in {
-      background-color: rgba(28, 38, 36, .62);
-      border-color: rgba(255, 255, 255, .10);
-      box-shadow: var(--shadow-ambient-sm), inset 0 1px 0 rgba(255, 255, 255, .08);
-    }
-    .glass-glow {
-      background-image:
-        radial-gradient(62% 76% at 86% 4%, rgba(91, 157, 150, .22), transparent 62%),
-        radial-gradient(50% 62% at 2% 100%, rgba(94, 145, 145, .18), transparent 64%);
-    }
-    .portrait-shell {
-      background: rgba(28, 38, 36, .72);
-      border-color: rgba(255, 255, 255, .14);
-      box-shadow: 0 18px 34px -22px rgba(0, 0, 0, .78), inset 0 1px 0 rgba(255, 255, 255, .12);
-    }
-    .glass-bar {
-      background-color: rgba(17, 23, 22, .74);
-      border-bottom-color: var(--rule);
-      box-shadow: 0 10px 30px -24px rgba(0, 0, 0, .9);
-    }
-    .btn-primary {
-      color: #0F1715;
-      background-color: #9ACDC9;
-      background-image: linear-gradient(180deg, #C2ECE7, #8FCAC5);
-      box-shadow: 0 14px 28px -14px rgba(154, 205, 201, .45), inset 0 1px 0 rgba(255, 255, 255, .42);
-    }
-    .btn-primary:hover { box-shadow: 0 18px 34px -14px rgba(154, 205, 201, .54), inset 0 1px 0 rgba(255, 255, 255, .52); }
-    .btn-ghost {
-      color: #EEF5F2;
-      background-color: rgba(23, 31, 30, .62);
-      border-color: rgba(255, 255, 255, .12);
-      box-shadow: 0 12px 26px -18px rgba(0, 0, 0, .72), inset 0 1px 0 rgba(255, 255, 255, .08);
-    }
-    .btn-ghost:hover { border-color: var(--rule-strong); color: #C2ECE7; }
-    .card-hover:hover {
-      background-color: rgba(31, 43, 41, .78);
-      border-color: rgba(255, 255, 255, .18);
-      box-shadow: 0 34px 62px -30px rgba(0, 0, 0, .82), inset 0 1px 0 rgba(255, 255, 255, .14);
-    }
-    .skill-token {
-      background-color: rgba(255, 255, 255, .035);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06);
-    }
-    .skill-token:hover { background-color: rgba(154, 205, 201, .10); }
-    .acc-btn:hover { background-color: rgba(255, 255, 255, .04) !important; }
-    footer { border-color: var(--rule) !important; }
-    ::selection { background: rgba(154, 205, 201, .28); color: #F6FFFC; }
-  }
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -510,17 +490,13 @@ tailwind.config = {
   }
 
   @media (prefers-reduced-transparency: reduce) {
-    .glass, .glass-in, .glass-bar, .btn-ghost {
+    .glass, .glass-bar, .btn-ghost, .resume-panel {
       -webkit-backdrop-filter: none !important;
       backdrop-filter: none !important;
       background-color: rgba(255, 255, 255, .96) !important;
     }
     .profile-panel::before { display: none; }
   }
-  @media (prefers-color-scheme: dark) and (prefers-reduced-transparency: reduce) {
-    .glass, .glass-in, .glass-bar, .btn-ghost { background-color: #18201F !important; }
-  }
-
   /* 打印 / 导出 PDF。
      两件事：
      1) 强制展开：否则未滚动到的区块停在 opacity:0 / 折叠态，导出整片空白；
@@ -537,7 +513,7 @@ tailwind.config = {
 
     html, body { background: #fff !important; background-image: none !important; }
 
-    .glass, .glass-in, .glass-bar, .btn-ghost {
+    .glass, .glass-bar, .btn-ghost, .resume-panel {
       background-color: #fff !important; background-image: none !important;
       -webkit-backdrop-filter: none !important; backdrop-filter: none !important;
       box-shadow: none !important; border-color: #D8D4CC !important;
@@ -554,8 +530,10 @@ tailwind.config = {
 
 <!-- ════════════ 导航：单行、64px 高、滚动高亮当前区块 ════════════ -->
 <nav class="fixed top-0 inset-x-0 z-50 glass-bar">
-  <div class="mx-auto max-w-content px-6 h-16 flex items-center justify-between">
-    <a href="#top" class="text-[16px] text-t1 hover:text-brand-strong transition-colors duration-150">宋海燕</a>
+  <div class="mx-auto max-w-content px-6 h-[68px] flex items-center justify-between">
+    <a href="#top" class="flex items-center gap-2 text-[16px] text-t1 hover:text-brand-strong transition-colors duration-150">
+      <span class="inline-block h-3 w-3 bg-brand-soft"></span>宋海燕
+    </a>
 
     <div class="hidden md:flex items-center gap-7 text-[14px]">
       <a href="#projects"   class="nav-link text-t2 hover:text-t1 transition-colors duration-150" data-nav="projects">项目</a>
@@ -578,10 +556,11 @@ tailwind.config = {
 
   <!-- ════════════ 首屏 ════════════ -->
   <header id="top" class="hero-stage relative overflow-hidden">
-    <div class="relative mx-auto max-w-content px-6 pt-24 pb-20 lg:pt-24 lg:pb-24">
+    <div class="relative mx-auto max-w-content px-6 pt-28 pb-20 lg:pt-28 lg:pb-24">
       <div class="grid lg:grid-cols-[1fr_auto] gap-12 lg:gap-16 items-center">
 
         <div>
+          <div class="hero-eyebrow reveal">PERSONAL PROFILE · 2026</div>
           <!-- 名字和下面那行小标签保持明显字号差，形成整页最强的一处层级对比 -->
           <h1 class="hero-name reveal text-[54px] sm:text-[72px] lg:text-[96px] font-semibold
                      tracking-[-0.03em] leading-[1.02] text-t1"
@@ -643,7 +622,7 @@ tailwind.config = {
   <section id="projects" class="scroll-mt-20">
     <div class="mx-auto max-w-content px-6 py-20 lg:py-24">
       <div class="reveal">
-        <h2 class="text-[30px] lg:text-[42px] font-semibold tracking-[-0.015em] leading-[1.15] text-t1">我做过的项目</h2>
+        <h2 class="section-title text-[30px] lg:text-[42px] font-semibold leading-[1.15] text-t1" data-index="01" data-en="PROJECT EXPERIENCE">我做过的项目</h2>
         <p class="mt-4 max-w-[52ch] text-[16px] leading-[1.9] text-t2">
           三段从场景梳理到方案表达的项目实践，都覆盖需求、流程、产品边界与评测方式。
         </p>
@@ -657,10 +636,10 @@ tailwind.config = {
   <section id="education" class="scroll-mt-20">
     <div class="mx-auto max-w-content px-6 py-20 lg:py-24">
       <div class="reveal">
-        <h2 class="text-[30px] lg:text-[42px] font-semibold tracking-[-0.015em] leading-[1.15] text-t1">教育背景</h2>
+        <h2 class="section-title text-[30px] lg:text-[42px] font-semibold leading-[1.15] text-t1" data-index="02" data-en="EDUCATIONAL BACKGROUND">教育背景</h2>
         <p class="mt-4 max-w-[48ch] text-[16px] leading-[1.9] text-t2">城乡规划训练让我习惯从复杂场景、角色关系和业务约束中提炼问题。</p>
       </div>
-      <div id="education-list" class="glass mt-12 px-7 lg:px-9"></div>
+      <div id="education-list" class="resume-panel mt-12 px-7 lg:px-9"></div>
     </div>
   </section>
 
@@ -668,10 +647,10 @@ tailwind.config = {
   <section id="experience" class="scroll-mt-20">
     <div class="mx-auto max-w-content px-6 py-20 lg:py-24">
       <div class="reveal">
-        <h2 class="text-[30px] lg:text-[42px] font-semibold tracking-[-0.015em] leading-[1.15] text-t1">实习与校园经历</h2>
+        <h2 class="section-title text-[30px] lg:text-[42px] font-semibold leading-[1.15] text-t1" data-index="03" data-en="INTERNSHIPS &amp; CAMPUS">实习与校园经历</h2>
       </div>
 
-      <div class="glass mt-12 px-7 lg:px-9">
+      <div class="resume-panel mt-12 px-7 lg:px-9">
         <div id="experience-list"></div>
       </div>
     </div>
@@ -681,7 +660,7 @@ tailwind.config = {
   <section id="about" class="scroll-mt-20">
     <div class="mx-auto max-w-content px-6 py-20 lg:py-24">
       <div class="reveal">
-        <h2 class="text-[30px] lg:text-[42px] font-semibold tracking-[-0.015em] leading-[1.15] text-t1">关于我</h2>
+        <h2 class="section-title text-[30px] lg:text-[42px] font-semibold leading-[1.15] text-t1" data-index="04" data-en="PERSONAL EVALUATION">关于我</h2>
       </div>
 
       <div class="reveal mt-10 grid gap-10 lg:grid-cols-[1.25fr_1fr] lg:gap-14">
@@ -697,10 +676,10 @@ tailwind.config = {
   <section id="skills" class="scroll-mt-20">
     <div class="mx-auto max-w-content px-6 py-20 lg:py-24">
       <div class="reveal">
-        <h2 class="text-[30px] lg:text-[42px] font-semibold tracking-[-0.015em] leading-[1.15] text-t1">我能上手做的事</h2>
+        <h2 class="section-title text-[30px] lg:text-[42px] font-semibold leading-[1.15] text-t1" data-index="05" data-en="PROFESSIONAL SKILLS">我能上手做的事</h2>
       </div>
 
-      <div class="glass mt-12 px-7 lg:px-9">
+      <div class="resume-panel mt-12 px-7 lg:px-9">
         <div id="skills-list"></div>
       </div>
     </div>
@@ -710,9 +689,9 @@ tailwind.config = {
   <section id="portfolio" class="scroll-mt-20">
     <div class="mx-auto max-w-content px-6 py-20 lg:py-24">
       <div class="reveal">
-        <h2 class="text-[30px] lg:text-[42px] font-semibold tracking-[-0.015em] leading-[1.15] text-t1">更多 AI 作品</h2>
+        <h2 class="section-title text-[30px] lg:text-[42px] font-semibold leading-[1.15] text-t1" data-index="06" data-en="SELECTED WORKS">更多 AI 作品</h2>
       </div>
-      <div class="glass mt-12 px-7 lg:px-9">
+      <div class="resume-panel mt-12 px-7 lg:px-9">
         <div id="portfolio-list"></div>
       </div>
     </div>
@@ -722,7 +701,7 @@ tailwind.config = {
   <section id="contact" class="scroll-mt-20 relative overflow-hidden">
     <div class="relative mx-auto max-w-content px-6 py-20 lg:py-24 pb-24 lg:pb-28">
       <div class="reveal">
-        <h2 class="text-[30px] lg:text-[42px] font-semibold tracking-[-0.015em] leading-[1.15] text-t1" data-fill="contactTitle">想聊聊的话，直接找我</h2>
+        <h2 class="section-title text-[30px] lg:text-[42px] font-semibold leading-[1.15] text-t1" data-index="07" data-en="CONTACT" data-fill="contactTitle">想聊聊的话，直接找我</h2>
         <p class="mt-4 text-[16px] text-t2" data-fill="contactNote">实习、项目合作，或者只是交换一下想法都可以。</p>
       </div>
       <div id="contact-list" class="mt-12"></div>
@@ -791,7 +770,7 @@ const CONTENT = {
       name: '飞鸟驿乡：智慧乡村产业运营平台',
       role: 'TO C / 产品方案 / 2026.01-03',
       oneLiner: '围绕乡村低空观光，设计游客端、商户经营台和运营驾驶舱，打通预约、核销、消费、接单结算与运营监测，并用 GMV、转化率和复购等指标构建数据闭环。',
-      tags: ['三端产品', '业务闭环', '指标体系', '国家级二等奖'],
+      tags: ['三端产品', '业务闭环', '指标体系', '国家级一等奖'],
       links: [
         { label: '查看原型', href: 'https://shy122122.github.io/yixiang-demo/' },
         { label: 'PRD 文档', href: 'https://my.feishu.cn/wiki/Ngj8wCHaLij2PKkVoMKcy9HNnGc?from=from_copylink' }
@@ -917,13 +896,14 @@ const projectLinks = p => (p.links || (p.link ? [{ label: p.linkText || '查看�
       class="group inline-flex items-center gap-2 text-[14px] text-brand hover:text-brand-strong transition-colors duration-150">
       ${esc(link.label)}<i class="fa fa-arrow-right text-[9px] arr"></i></a>`).join('');
 
-const caseBlock = (p, d) => `
+const caseBlock = (p, d, i) => `
   <div class="reveal" style="--d:${d}ms">
     <article class="project-feature glass glass-glow card-hover spot tilt-card p-7 lg:p-9" data-tilt>
-      <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1">
-        <h3 class="text-[24px] font-medium tracking-[-0.01em] text-t1">${esc(p.name)}</h3>
-        <span class="text-[13px] text-brand">${esc(p.role)}</span>
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <span class="case-label">CASE ${String(i + 1).padStart(2, '0')} · FEATURED</span>
+        <span class="num text-[12px] text-brand">${esc(p.role)}</span>
       </div>
+      <h3 class="mt-5 text-[24px] font-medium leading-[1.35] text-t1">${esc(p.name)}</h3>
 
       <dl class="mt-8 grid gap-6 sm:grid-cols-[.9fr_1.25fr_1fr] sm:gap-8">
         ${[['问题', p.problem], ['行动', p.action], ['结果', p.result]].map(([k, v]) => `
@@ -934,7 +914,7 @@ const caseBlock = (p, d) => `
       </dl>
 
       <div class="mt-8 flex flex-wrap items-center justify-between gap-4">
-        <div class="glass-in flex flex-wrap gap-1.5 px-3 py-2.5">
+        <div class="project-tags flex flex-wrap gap-1.5">
           ${(p.tags || []).map(t => `<span class="px-2.5 py-1 border border-[color:var(--rule)]
                                               text-[13px] text-t2" style="border-radius: var(--r-pill)">${esc(t)}</span>`).join('')}
         </div>
@@ -946,7 +926,10 @@ const caseBlock = (p, d) => `
 const compactCard = (p, d, i) => `
   <div class="project-card-wrap reveal" style="--d:${d}ms">
     <article class="project-mini glass ${i === 0 ? '' : 'glass-glow'} card-hover spot group p-7 lg:p-8">
-      <div class="num text-[12px] tracking-[0.06em] text-brand">${esc(p.role)}</div>
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <span class="case-label">CASE ${String(i + 2).padStart(2, '0')}</span>
+        <span class="num text-[11px] text-brand">${esc(p.role)}</span>
+      </div>
       <h3 class="mt-4 text-[21px] leading-[1.35] text-t1 group-hover:text-brand-strong transition-colors duration-150">${esc(p.name)}</h3>
       <p class="mt-4 text-[15px] leading-[1.85] text-t2">${esc(p.oneLiner)}</p>
       <div class="mt-6 flex flex-wrap gap-2">
@@ -958,7 +941,7 @@ const compactCard = (p, d, i) => `
   </div>`;
 
 $('projects-list').innerHTML =
-  featured.map((p, i) => caseBlock(p, i * 90)).join('') +
+  featured.map((p, i) => caseBlock(p, i * 90, i)).join('') +
   (compact.length ? `<div class="mt-8 grid gap-5 md:grid-cols-2 md:items-stretch">${compact.map((p, i) => compactCard(p, 90 + i * 90, i)).join('')}</div>` : '');
 
 /* 教育背景 */
@@ -1149,28 +1132,7 @@ const spy = new IntersectionObserver(es => es.forEach(e => {
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 document.querySelectorAll('section[id]').forEach(el => spy.observe(el));
 
-/* 数据条数字滚动计数。
-   只在「关了动效」之外、且值确实是纯数字时才跑；否则保留渲染时写好的最终值，
-   所以 JS 出错或数字里带单位（如「33 页」）都不会显示成 0。 */
-const counters = [...document.querySelectorAll('[data-count]')]
-  .filter(el => /^\d+$/.test(el.dataset.count));
-if (counters.length && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  const co = new IntersectionObserver(es => es.forEach(e => {
-    if (!e.isIntersecting) return;
-    const el = e.target; co.unobserve(el);
-    const target = parseInt(el.dataset.count, 10), t0 = performance.now(), dur = 900;
-    const step = now => {
-      const p = Math.min(1, (now - t0) / dur);
-      el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
-      if (p < 1) requestAnimationFrame(step);
-    };
-    el.textContent = '0';
-    requestAnimationFrame(step);
-  }), { threshold: 0.4 });
-  counters.forEach(el => co.observe(el));
-}
 </script>
 
 </body>
 </html>
-

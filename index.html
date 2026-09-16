@@ -287,25 +287,6 @@ tailwind.config = {
     transform: perspective(1100px) rotateX(var(--rx)) rotateY(var(--ry)) translateY(-4px) scale(1.004);
   }
 
-  .stat-cell {
-    position: relative;
-    overflow: hidden;
-    transition: background-color .22s ease, transform .22s cubic-bezier(.16,1,.3,1);
-  }
-  .stat-cell::after {
-    content: '';
-    position: absolute;
-    left: 20%; right: 20%; bottom: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, #5E9191, transparent);
-    transform: scaleX(0);
-    transition: transform .3s cubic-bezier(.16,1,.3,1);
-  }
-  .stat-cell .num { transition: transform .28s cubic-bezier(.16,1,.3,1), color .2s ease; }
-  .stat-cell:hover { background-color: rgba(255, 255, 255, .34); transform: translateY(-2px); }
-  .stat-cell:hover::after { transform: scaleX(1); }
-  .stat-cell:hover .num { transform: translateY(-3px) scale(1.05); }
-
   .project-feature { min-height: 390px; }
   .project-card-wrap { height: 100%; }
   .project-mini {
@@ -511,7 +492,6 @@ tailwind.config = {
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06);
     }
     .skill-token:hover { background-color: rgba(154, 205, 201, .10); }
-    .stat-cell:hover { background-color: rgba(255, 255, 255, .035); }
     .acc-btn:hover { background-color: rgba(255, 255, 255, .04) !important; }
     footer { border-color: var(--rule) !important; }
     ::selection { background: rgba(154, 205, 201, .28); color: #F6FFFC; }
@@ -520,13 +500,13 @@ tailwind.config = {
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .acc-panel, .reveal, .acc-sign, .arr, .card-hover, .btn-primary, .btn-ghost, .nav-link::after,
-    .stat-cell, .stat-cell .num, .stat-cell::after, .skill-token { transition: none !important; }
+    .skill-token { transition: none !important; }
     .reveal { opacity: 1; transform: none; }
     .nav-progress, .profile-panel::before { animation: none !important; }
     .group:hover .arr { transform: none !important; }
     .tilt-card, .tilt-card > *, .tilt-card.card-hover:hover,
     .card-hover:hover, .btn-primary:hover, .btn-ghost:hover, .btn-primary:active, .btn-ghost:active,
-    .stat-cell:hover, .stat-cell:hover .num, .skill-token:hover { transform: none !important; }
+    .skill-token:hover { transform: none !important; }
   }
 
   @media (prefers-reduced-transparency: reduce) {
@@ -552,7 +532,7 @@ tailwind.config = {
     .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
     .acc-panel { grid-template-rows: 1fr !important; transition: none !important; }
     nav, .nav-progress, .spot::before, .profile-panel::before, .hero-stage::before,
-    .hero-stage::after, .hero-name::before, .stat-cell::after { display: none !important; }
+    .hero-stage::after, .hero-name::before { display: none !important; }
     .arr, .card-hover:hover, .tilt-card, .tilt-card > *, .tilt-card.card-hover:hover { transform: none !important; }
 
     html, body { background: #fff !important; background-image: none !important; }
@@ -658,15 +638,6 @@ tailwind.config = {
       </div>
     </div>
   </header>
-
-  <!-- ════════════ 数据亮点条 ════════════ -->
-  <section>
-    <div class="mx-auto max-w-content px-6">
-      <div class="glass glass-glow">
-        <div id="stats-list" class="grid grid-cols-2 md:grid-cols-4"></div>
-      </div>
-    </div>
-  </section>
 
   <!-- ════════════ 重点项目（前置，按「问题 / 行动 / 结果」组织）════════════ -->
   <section id="projects" class="scroll-mt-20">
@@ -785,14 +756,6 @@ const CONTENT = {
     { label: '地点', value: '西安 · 23 岁' }
   ],
   resumeUrl: 'assets/resume.jpg',
-
-  // ── 数据亮点条（建议 3 到 4 条，label 控制在 6 字内）──────
-  stats: [
-    { value: '3', label: '完整项目' },
-    { value: '3', label: '产品 PRD' },
-    { value: '3', label: '评估体系' },
-    { value: '1', label: '国家级二等奖' }
-  ],
 
   // ── 重点项目 ───────────────────────────────────────────
   // 第一条 featured: true 会渲染成大块案例（问题 / 行动 / 结果），
@@ -945,18 +908,6 @@ if (CONTENT.resumeUrl) {
   resumeBtn.querySelector('i').className = 'fa fa-envelope text-[10px]';
   resumeBtn.lastChild.textContent = ' 联系我';
 }
-
-/* 数据亮点条。数字先渲染成最终值（JS 挂了 / 关动效时也是对的），
-   真要滚动计数时会先归零再往上走，所以不会闪。 */
-$('stats-list').innerHTML = CONTENT.stats.map((s, i) => `
-  <div class="reveal ${i > 0 ? 'md:border-l md:border-[color:var(--rule)]' : ''}"
-       style="--d:${i * 80}ms">
-    <div class="stat-cell h-full py-9 px-5 text-center">
-      <div class="num text-[44px] lg:text-[54px] leading-none text-brand-strong"
-           data-count="${esc(s.value)}">${esc(s.value)}</div>
-      <div class="mt-3 text-[13px] tracking-[0.14em] text-t2">${esc(s.label)}</div>
-    </div>
-  </div>`).join('');
 
 /* 重点项目：第一条走大块案例，其余走紧凑条目 */
 const featured = CONTENT.projects.filter(p => p.featured);

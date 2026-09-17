@@ -80,6 +80,8 @@ tailwind.config = {
   /* 首屏复用纸质简历的横向色带和双线结构。 */
   .hero-stage {
     isolation: isolate;
+    --hero-x: 0px;
+    --hero-y: 0px;
     border-bottom: 1px solid var(--rule);
     background-color: rgba(255, 255, 255, .62);
   }
@@ -113,9 +115,54 @@ tailwind.config = {
     position: relative;
     display: inline-block;
     isolation: isolate;
-    text-shadow: 2px 3px 0 rgba(94, 143, 147, .18), 0 18px 42px rgba(43, 85, 88, .08);
+    color: #172426;
+    background-image: linear-gradient(105deg, #172426 0%, #172426 37%, #5E8F93 48%, #D9EAEA 51%, #2B5558 55%, #172426 66%, #172426 100%);
+    background-size: 230% 100%;
+    background-position: 100% 50%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 18px 42px rgba(43, 85, 88, .08);
   }
-  .hero-name::before { content: none; }
+  .hero-name::before {
+    content: attr(data-shadow);
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    color: transparent;
+    opacity: .62;
+    -webkit-text-stroke: 1px rgba(94, 143, 147, .12);
+    transform: translate(5px, 5px);
+    pointer-events: none;
+  }
+
+  .hero-matrix {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    opacity: .34;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(94, 143, 147, .10) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(94, 143, 147, .08) 1px, transparent 1px);
+    background-size: 44px 44px;
+    -webkit-mask-image: linear-gradient(90deg, transparent 2%, #000 28%, #000 78%, transparent 98%);
+    mask-image: linear-gradient(90deg, transparent 2%, #000 28%, #000 78%, transparent 98%);
+    transform: translate3d(var(--hero-x), var(--hero-y), 0) scale(1.04);
+    transition: transform .5s cubic-bezier(.16,1,.3,1);
+  }
+  .hero-matrix::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -14%;
+    width: 12%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .74), transparent);
+    transform: skewX(-12deg);
+    filter: blur(2px);
+  }
 
   .hero-eyebrow {
     display: inline-flex;
@@ -134,6 +181,53 @@ tailwind.config = {
     background: #3F6D70;
     box-shadow: 5px 5px 0 rgba(174, 209, 211, .82);
   }
+  .hero-scroll-cue {
+    position: absolute;
+    left: 50%;
+    bottom: 22px;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 42px;
+    color: var(--resume-teal-deep);
+    transform: translateX(-50%);
+  }
+  .hero-scroll-cue::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 1px;
+    height: 25px;
+    background: linear-gradient(to bottom, transparent, var(--resume-teal));
+  }
+  .hero-scroll-cue i { position: absolute; bottom: 1px; font-size: 11px; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-name { animation: name-sheen 7.8s cubic-bezier(.16,1,.3,1) 1.1s infinite; }
+    .hero-matrix::after { animation: matrix-scan 9s cubic-bezier(.16,1,.3,1) 1.8s infinite; }
+    .hero-eyebrow::before { animation: signal-pulse 2.8s ease-in-out infinite; }
+    .hero-scroll-cue { animation: scroll-cue 2.2s ease-in-out infinite; }
+    .portrait-shell::before { animation: portrait-ring 9s linear infinite; }
+  }
+  @keyframes name-sheen {
+    0%, 66% { background-position: 100% 50%; }
+    84%, 100% { background-position: 0 50%; }
+  }
+  @keyframes matrix-scan {
+    0%, 62% { transform: translateX(0) skewX(-12deg); opacity: 0; }
+    70% { opacity: .9; }
+    90%, 100% { transform: translateX(960%) skewX(-12deg); opacity: 0; }
+  }
+  @keyframes signal-pulse {
+    0%, 100% { box-shadow: 5px 5px 0 rgba(174, 209, 211, .82); }
+    50% { box-shadow: 5px 5px 0 rgba(174, 209, 211, .82), 0 0 0 7px rgba(94, 143, 147, .08); }
+  }
+  @keyframes scroll-cue {
+    0%, 100% { transform: translateX(-50%) translateY(0); opacity: .52; }
+    50% { transform: translateX(-50%) translateY(5px); opacity: 1; }
+  }
+  @keyframes portrait-ring { to { transform: rotate(360deg); } }
 
   /* 毛玻璃只用于关键卡片，其他信息区采用纸质简历式平面分栏。 */
   .glass {
@@ -258,14 +352,19 @@ tailwind.config = {
      .card-hover 和 .reveal 都写 transition 简写，**不能挂在同一个元素上**：
      用法是把 .reveal 放在外层 div，.card-hover 放在里层卡片。 */
   .card-hover {
+    background-size: 100% 100%, 0 2px;
+    background-position: 0 0, 0 100%;
+    background-repeat: no-repeat;
     transition: background-color .22s ease, border-color .22s ease,
-                box-shadow .22s ease, transform .22s cubic-bezier(.16,1,.3,1);
+                box-shadow .22s ease, transform .22s cubic-bezier(.16,1,.3,1),
+                background-size .55s cubic-bezier(.16,1,.3,1);
   }
   .card-hover:hover {
     background-color: rgba(255, 255, 255, .92);
     border-color: rgba(255, 255, 255, .95);
     box-shadow: 0 34px 62px -30px rgba(34, 62, 62, .42), inset 0 1px 0 rgba(255, 255, 255, 1);
     transform: translateY(-3px);
+    background-size: 100% 100%, 100% 2px;
   }
 
   /* 轻量 3D 指针反馈，CSS 变量由指针事件写入，不触发页面重排。 */
@@ -283,6 +382,9 @@ tailwind.config = {
   .project-feature {
     min-height: 390px;
     border-top: 4px solid var(--resume-teal);
+    background-image:
+      linear-gradient(135deg, rgba(174, 209, 211, .24), rgba(255, 255, 255, .08) 48%, rgba(94, 143, 147, .08)),
+      linear-gradient(90deg, #AED1D3, #2B5558);
   }
   .project-card-wrap { height: 100%; }
   .project-mini {
@@ -291,6 +393,9 @@ tailwind.config = {
     display: flex;
     flex-direction: column;
     border-top: 3px solid rgba(94, 143, 147, .72);
+    background-image:
+      linear-gradient(135deg, rgba(255, 255, 255, .06), rgba(174, 209, 211, .14)),
+      linear-gradient(90deg, #AED1D3, #2B5558);
   }
   .project-mini .project-links { margin-top: auto; }
 
@@ -308,7 +413,10 @@ tailwind.config = {
     width: 8px;
     height: 8px;
     background: var(--resume-teal);
+    transition: transform .45s cubic-bezier(.16,1,.3,1), background-color .2s ease;
   }
+  .project-feature:hover .case-label::before,
+  .project-mini:hover .case-label::before { transform: rotate(135deg) scale(.82); background: var(--resume-teal-deep); }
 
   .project-tags {
     padding-top: 15px;
@@ -396,13 +504,28 @@ tailwind.config = {
     padding: 5px;
     border-radius: 50%;
     background: rgba(255, 255, 255, .72);
-    border: 2px solid var(--resume-teal);
+    border: 1px solid rgba(94, 143, 147, .32);
     box-shadow:
       0 18px 34px -22px rgba(34, 62, 62, .42),
       inset 0 1px 0 rgba(255, 255, 255, .98),
       0 0 0 5px rgba(255, 255, 255, .72);
   }
+  .portrait-shell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, transparent 0 15%, #AED1D3 24%, #2B5558 39%, transparent 48% 72%, #5E8F93 82%, transparent 92%) border-box;
+    -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
   .portrait-photo {
+    position: relative;
+    z-index: 1;
     width: 100%; height: 100%; object-fit: cover;
     border-radius: 50%;
     transform: scale(1.28);
@@ -428,8 +551,14 @@ tailwind.config = {
     align-items: baseline;
     gap: 10px 14px;
     padding-bottom: 14px;
-    border-bottom: 3px solid var(--resume-teal);
+    border-bottom: 0;
+    background-image: linear-gradient(90deg, var(--resume-teal), var(--resume-teal-deep));
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0 3px;
+    transition: background-size .85s cubic-bezier(.16,1,.3,1) .08s;
   }
+  .reveal.in .section-title { background-size: 100% 3px; }
   .section-title::before {
     content: attr(data-index);
     display: inline-grid;
@@ -466,8 +595,8 @@ tailwind.config = {
   @media (max-width: 767px) {
     .profile-panel { min-height: 0; }
     .portrait-shell { width: 112px; }
-    .hero-stage::before { top: 178px; height: 160px; }
-    .hero-stage::after { top: 166px; }
+    .hero-stage::before { top: 226px; height: 146px; }
+    .hero-stage::after { top: 214px; }
     .section-title::after { width: 100%; margin-left: 48px; }
   }
   @media (hover: none), (pointer: coarse) {
@@ -480,9 +609,11 @@ tailwind.config = {
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .acc-panel, .reveal, .acc-sign, .arr, .card-hover, .btn-primary, .btn-ghost, .nav-link::after,
-    .skill-token { transition: none !important; }
+    .skill-token, .section-title, .hero-matrix { transition: none !important; }
     .reveal { opacity: 1; transform: none; }
-    .nav-progress, .profile-panel::before { animation: none !important; }
+    .nav-progress, .profile-panel::before, .hero-name, .hero-matrix::after,
+    .portrait-shell::before, .hero-scroll-cue { animation: none !important; }
+    .section-title { background-size: 100% 3px; }
     .group:hover .arr { transform: none !important; }
     .tilt-card, .tilt-card > *, .tilt-card.card-hover:hover,
     .card-hover:hover, .btn-primary:hover, .btn-ghost:hover, .btn-primary:active, .btn-ghost:active,
@@ -508,7 +639,8 @@ tailwind.config = {
     .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
     .acc-panel { grid-template-rows: 1fr !important; transition: none !important; }
     nav, .nav-progress, .spot::before, .profile-panel::before, .hero-stage::before,
-    .hero-stage::after, .hero-name::before { display: none !important; }
+    .hero-stage::after, .hero-name::before, .hero-matrix, .hero-scroll-cue { display: none !important; }
+    .hero-name { color: #172426 !important; background: none !important; -webkit-text-fill-color: #172426 !important; text-shadow: none !important; }
     .arr, .card-hover:hover, .tilt-card, .tilt-card > *, .tilt-card.card-hover:hover { transform: none !important; }
 
     html, body { background: #fff !important; background-image: none !important; }
@@ -556,6 +688,7 @@ tailwind.config = {
 
   <!-- ════════════ 首屏 ════════════ -->
   <header id="top" class="hero-stage relative overflow-hidden">
+    <div class="hero-matrix" aria-hidden="true"></div>
     <div class="relative mx-auto max-w-content px-6 pt-28 pb-20 lg:pt-28 lg:pb-24">
       <div class="grid lg:grid-cols-[1fr_auto] gap-12 lg:gap-16 items-center">
 
@@ -563,7 +696,7 @@ tailwind.config = {
           <div class="hero-eyebrow reveal">PERSONAL PROFILE · 2026</div>
           <!-- 名字和下面那行小标签保持明显字号差，形成整页最强的一处层级对比 -->
           <h1 class="hero-name reveal text-[54px] sm:text-[72px] lg:text-[96px] font-semibold
-                     tracking-[-0.03em] leading-[1.02] text-t1"
+                     tracking-[0] leading-[1.02] text-t1"
               data-fill="name" data-shadow="宋海燕">宋海燕</h1>
 
           <div class="reveal mt-6 flex items-center gap-3" style="--d:110ms">
@@ -616,6 +749,9 @@ tailwind.config = {
 
       </div>
     </div>
+    <a href="#projects" class="hero-scroll-cue" aria-label="浏览项目" title="浏览项目">
+      <i class="fa fa-angle-down" aria-hidden="true"></i>
+    </a>
   </header>
 
   <!-- ════════════ 重点项目（前置，按「问题 / 行动 / 结果」组织）════════════ -->
@@ -1083,6 +1219,7 @@ document.querySelectorAll('.acc-btn').forEach(btn => {
 /* 悬停聚光：只写 CSS 变量，不触发任何重排/状态更新；rAF 节流 */
 if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
   let queued = false, last = null;
+  const heroStage = document.querySelector('.hero-stage');
   addEventListener('pointermove', e => {
     last = e;
     if (queued) return;
@@ -1104,8 +1241,23 @@ if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
         tilt.style.setProperty('--rx', (-ny * 4.5).toFixed(2) + 'deg');
         tilt.style.setProperty('--ry', (nx * 5.5).toFixed(2) + 'deg');
       }
+
+      if (heroStage && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const hr = heroStage.getBoundingClientRect();
+        if (last.clientY >= hr.top && last.clientY <= hr.bottom) {
+          const hx = ((last.clientX / innerWidth) - .5) * -12;
+          const hy = ((last.clientY - hr.top) / hr.height - .5) * -8;
+          heroStage.style.setProperty('--hero-x', hx.toFixed(2) + 'px');
+          heroStage.style.setProperty('--hero-y', hy.toFixed(2) + 'px');
+        }
+      }
     });
   }, { passive: true });
+
+  heroStage?.addEventListener('pointerleave', () => {
+    heroStage.style.setProperty('--hero-x', '0px');
+    heroStage.style.setProperty('--hero-y', '0px');
+  });
 
   document.querySelectorAll('[data-tilt]').forEach(el => {
     el.addEventListener('pointerleave', () => {
